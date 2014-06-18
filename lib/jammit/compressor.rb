@@ -214,7 +214,12 @@ module Jammit
     # append the RAILS_ASSET_ID cache-buster to URLs, if it's defined.
     def rewrite_asset_path(path, file_path)
       asset_id = rails_asset_id(file_path)
-      (!asset_id || asset_id == '') ? path : "#{path}?#{asset_id}"
+
+      if ENV['asset_cloudfront'] == "true"
+        (!asset_id || asset_id == '') ? path : "/a/#{asset_id}/#{path}"
+      else
+        (!asset_id || asset_id == '') ? path : "#{path}?#{asset_id}"
+      end
     end
 
     # Similar to the AssetTagHelper's method of the same name, this will
