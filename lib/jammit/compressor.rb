@@ -216,7 +216,7 @@ module Jammit
       asset_id = rails_asset_id(file_path)
 
       if ENV['asset_cloudfront'] == "true"
-        (!asset_id || asset_id == '') ? path : "/a/#{asset_id}/#{path}"
+        (!asset_id || asset_id == '') ? path : "/a/#{asset_id}#{path}"
       else
         (!asset_id || asset_id == '') ? path : "#{path}?#{asset_id}"
       end
