@@ -1,4 +1,4 @@
-require 'rails'
+#require 'rails'
 require 'action_controller'
 
 module Jammit
@@ -93,6 +93,10 @@ end
 
 if defined?(Rails) && Rails.env.development?
   ActionController::Base.class_eval do
-    append_before_action { Jammit.reload! }
+    if respond_to?(:append_before_action)
+      append_before_action { Jammit.reload! }
+    elsif respond_to?(:append_before_filter)
+      append_before_filter { Jammit.reload! }
+    end
   end
 end
