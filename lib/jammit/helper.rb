@@ -53,7 +53,31 @@ module Jammit
 
     # HTML tags, in order, for all of the individual stylesheets.
     def individual_stylesheets(packages, options)
-      tags_with_options(packages, options) {|p| Jammit.packager.individual_urls(p.to_sym, :css) }
+      tags_with_options(packages, options) do |p|
+        Jammit.packager.individual_urls(p.to_sym, :css).map do |individual_url|
+          if individual_url.match?(/\.scss$/)
+            new_url = File.join(Jammit.package_path, 'compiled-sass', individual_url.gsub(/\.scss$/, '.css'))
+
+            Rails.logger.info("Compiling #{individual_url} with SASS to #{new_url}")
+            engine = SassC::Engine.new(
+              File.read(File.join(Jammit.public_root, individual_url)),
+              :load_paths => [Jammit.public_root],
+              :cache      => false,
+              :syntax     => :scss
+            )
+
+            compiled_sass_filepath = File.join(Jammit.public_root, new_url)
+            FileUtils.mkdir_p(File.dirname(compiled_sass_filepath))
+
+            File.open(compiled_sass_filepath, 'w') { |f| f.write(engine.render) }
+
+            # Make an absolute URL relative to the domain
+            File.join('/', new_url)
+          else
+            individual_url
+          end
+        end
+      end
     end
 
     # HTML tags for the stylesheet packages.
