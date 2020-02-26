@@ -51,7 +51,8 @@ module Jammit
     CSS_COMPRESSORS = {
       :cssmin   => Jammit.css_compressors.include?(:cssmin) ? Jammit::CssminCompressor : nil,
       :yui      => Jammit.css_compressors.include?(:yui) ? YUI::CssCompressor : nil,
-      :sass     => Jammit.css_compressors.include?(:sass) ? Jammit::SassCompressor : nil
+      :sass     => Jammit.css_compressors.include?(:sass) ? Jammit::SassCompressor : nil,
+      :sassc     => Jammit.css_compressors.include?(:sassc) ? Jammit::SassCCompressor : nil
      }
 
     JAVASCRIPT_DEFAULT_OPTIONS = {

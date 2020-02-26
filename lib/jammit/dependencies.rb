@@ -38,6 +38,14 @@ rescue LoadError
   Jammit.css_compressors.delete :sass
 end
 
+# Try Sassc
+begin
+  require 'sassc'
+  require 'jammit/sassc_compressor'
+rescue LoadError
+  Jammit.css_compressors.delete :sassc
+end
+
 # Load initial configuration before the rest of Jammit.
 Jammit.load_configuration(Jammit::DEFAULT_CONFIG_PATH, true) if defined?(Rails)
 

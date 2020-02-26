@@ -26,7 +26,7 @@ module Jammit
 
   DEFAULT_JAVASCRIPT_COMPRESSOR = :jsmin
 
-  CSS_COMPRESSORS               = [:cssmin, :yui, :sass]
+  CSS_COMPRESSORS               = [:cssmin, :yui, :sass, :sassc]
 
   DEFAULT_CSS_COMPRESSOR        = :cssmin
 
